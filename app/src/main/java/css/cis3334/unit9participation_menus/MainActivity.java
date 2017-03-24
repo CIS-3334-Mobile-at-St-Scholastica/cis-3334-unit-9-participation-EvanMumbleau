@@ -1,5 +1,7 @@
 package css.cis3334.unit9participation_menus;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +45,16 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void composeEmail() {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -68,14 +81,41 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
+            Intent newIntent = new Intent(MainActivity.this, SettingsActivity.class);
 
-        return super.onOptionsItemSelected(item);
+
+            //startActivityForResult(secActIntent, HR_REQUEST_CODE);
+            startActivity(newIntent);
+            return true;
+
+        }
+        if (id == R.id.addItem) {
+            Toast.makeText(getApplicationContext(), "adding study mates is not available yet.", Toast.LENGTH_LONG)
+                    .show();
+            return true;
+        } else if (id == R.id.deleteItem) {
+            Snackbar.make(getWindow().getDecorView(), "deleting a study mate is not available yet.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show();
+            return true;
+        } else if (id == R.id.emailOption) {
+            composeEmail();
+            return true;
+        } else if (id == R.id.smsOption) {
+
+
+            return true;
+
+        }
+            return super.onOptionsItemSelected(item);
+
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+
+
+    //  @SuppressWarnings("StatementWithEmptyBody")
+        //  @Override
+
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -99,3 +139,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 }
+
