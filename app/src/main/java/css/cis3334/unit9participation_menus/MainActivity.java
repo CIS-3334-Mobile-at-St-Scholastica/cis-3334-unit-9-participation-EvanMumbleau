@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import static android.R.id.message;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -102,7 +104,13 @@ public class MainActivity extends AppCompatActivity
             composeEmail();
             return true;
         } else if (id == R.id.smsOption) {
-
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setData(Uri.parse("smsto:"));  // This ensures only SMS apps respond
+            intent.putExtra("sms_body", message);
+            intent.putExtra(Intent.EXTRA_STREAM, attachment);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
 
             return true;
 
@@ -131,6 +139,19 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
+
+        } else if (id == R.id.nav_add) {
+            Toast.makeText(getApplicationContext(), "adding study mates is not available yet.", Toast.LENGTH_LONG)
+                    .show();
+            return true;
+        } else if (id == R.id.nav_delete) {
+            Snackbar.make(getWindow().getDecorView(), "deleting a study mate is not available yet.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show();
+            return true;
+        } else if (id == R.id.emailOption) {
+            composeEmail();
+            return true;
 
         }
 
